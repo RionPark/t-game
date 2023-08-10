@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.game.common.CommonView;
 import com.google.gson.Gson;
 
 /**
@@ -35,11 +36,25 @@ public class ListServlet extends HttpServlet {
 			MOCK_LIST.add(map);
 		}
 	}
-	//http://localhost/list/1
+	//http://localhost/list/one?num=14 => /list/one
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String cmd = CommonView.getCmd(request);
+		String json = "";
+		if("list".equals(cmd)) {
+			json = gson.toJson(MOCK_LIST);
+		}else if("one".equals(cmd)) {
+			String num = request.getParameter("num"); //14
+			if(num!=null) {
+				for(Map<String,String> map : MOCK_LIST) {
+					if(map.get("num").equals(num)) {
+						json = gson.toJson(map);
+						break;
+					}
+				}
+			}
+		}
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		String json = gson.toJson(MOCK_LIST);
 		out.println(json);
 	}
 
