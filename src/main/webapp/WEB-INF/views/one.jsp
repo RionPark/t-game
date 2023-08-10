@@ -11,7 +11,7 @@
 이름 : <span id="name"></span><br>
 나이 : <span id="age"></span><br>
 주소 : <span id="address"></span><br>
-<button onclick="goPage('/list/update?num=${param.num}')">수정</button><button onclick="deleteObj()">삭제</button>
+<button onclick="goPage('/views/update?num=${param.num}')">수정</button><button onclick="deleteObj()">삭제</button>
 <script>
 	function deleteObj(){
 		const xhr = new XMLHttpRequest();
