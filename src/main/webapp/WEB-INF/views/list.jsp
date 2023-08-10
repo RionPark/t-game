@@ -17,6 +17,7 @@ tr.link:hover{
 </style>
 </head>
 <body>
+	<button onclick="location.href='/views/insert'">등록</button>
 	<table border="1">
 		<tr>
 			<th>번호</th>

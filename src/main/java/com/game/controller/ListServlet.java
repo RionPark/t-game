@@ -1,10 +1,10 @@
 package com.game.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +59,43 @@ public class ListServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		BufferedReader br = request.getReader();
+		StringBuffer sb = new StringBuffer();
+		String str = null;
+		while((str=br.readLine())!=null) {
+			sb.append(str);
+		}
+		Map<String,String> map = gson.fromJson(sb.toString(), Map.class);
+		
+		String cmd = CommonView.getCmd(request);
+		String json = "0";
+		
+		if("insert".equals(cmd)) {
+			map.put("num", MOCK_LIST.size()+1+"");
+			if(MOCK_LIST.add(map)) {
+				json = "1";
+			}
+		}else if("delete".equals(cmd)) {
+			String num = request.getParameter("num");
+			if(num!=null) {
+				for(Map<String,String> obj : MOCK_LIST) {
+					if(obj.get("num").equals(num)) {
+						if(MOCK_LIST.remove(obj)) {
+							json = "1";
+						}
+						break;
+					}
+				}
+			}
+		}
+		response.setContentType("application/json;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(json);
 	}
 
+//	@Override
+//	protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//	
+//	}
 }
